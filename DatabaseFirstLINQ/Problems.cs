@@ -25,9 +25,9 @@ namespace DatabaseFirstLINQ
             //ProblemSeven();
             //ProblemEight();
             //ProblemNine();
-            //ProblemTen();
+            ProblemTen();
             //ProblemEleven();
-            ProblemTwelve();
+            //ProblemTwelve();
             //ProblemThirteen();
             //ProblemFourteen();
             //ProblemFifteen();
@@ -155,22 +155,43 @@ namespace DatabaseFirstLINQ
         {
             // Write a LINQ query that retreives all of the products in the shopping cart of users who have the role of "Employee".
             // Then print the user's email as well as the product's name, price, and quantity to the console.
+
+         
+            var employeeUsers = _context.UserRoles.
+                Include(ur => ur.Role).
+                Include(ur => ur.User).
+                Where(ur => ur.Role.RoleName == "Employee");
+            
             var customerProducts = _context.ShoppingCarts.
-                Include(cp => cp.Product);
+              Include(cp => cp.Product);
+
             foreach (ShoppingCart product in customerProducts)
             {
                 Console.WriteLine($"Product Name: {product.Product.Name}  " +
                     $"Product Price: {product.Product.Price}  " +
                     $"Product Quantity: {product.Quantity}");
             }
-            var customerUsers = _context.UserRoles.
-                Include(ur => ur.Role).
-                Include(ur => ur.User).
-                Where(ur => ur.Role.RoleName == "Employee");
-            foreach (UserRole userRole in customerUsers)
+
+            foreach (UserRole userRole in employeeUsers)
             {
                 Console.WriteLine($"Email: {userRole.User.Email} Role: {userRole.Role.RoleName}");
             }
+
+           
+            
+               
+                
+            
+
+          
+            //var customerUsers = _context.UserRoles.
+            //    Include(ur => ur.Role).
+            //    Include(ur => ur.User).
+            //    Where(ur => ur.Role.RoleName == "Employee");
+
+
+
+
 
 
         }
