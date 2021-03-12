@@ -21,9 +21,9 @@ namespace DatabaseFirstLINQ
             //ProblemThree();
             //ProblemFour();
             //ProblemFive();
-            ProblemSix();
+            //ProblemSix();
             //ProblemSeven();
-            //ProblemEight();
+            ProblemEight();
             //ProblemNine();
             //ProblemTen();
             //ProblemEleven();
@@ -63,15 +63,13 @@ namespace DatabaseFirstLINQ
         {
             // Write a LINQ query that gets each product where the products price is greater than $150.
             // Then print the name and price of each product from the above query to the console.
-            var products = _context.Products;
+            var products = _context.Products.Where(p => p.Price > 150);
             
             foreach (Product product in products)
             {
-                if (product.Price > 150)
-                {
-                    Console.WriteLine($"{product.Name}  {product.Price}");
-                   
-                }
+                
+                    Console.WriteLine($"{product.Name}  {product.Price}");                  
+                
             }
         }
 
@@ -134,6 +132,11 @@ namespace DatabaseFirstLINQ
             // Write a LINQ query that retreives all of the products in the shopping cart of the user who has the email "afton@gmail.com".
             // Then print the product's name, price, and quantity to the console.
 
+            var customerProducts = _context.ShoppingCarts.Include(cp => cp.Product).Where(cp => cp.User.Email == "afton@gmail.com");
+            foreach (ShoppingCart product in customerProducts)
+            {
+                Console.WriteLine($"Product Name: {product.Product.Name}  Product Price: {product.Product.Price}  Product Quantity: {product.Quantity}");
+            }
         }
 
         private void ProblemNine()
