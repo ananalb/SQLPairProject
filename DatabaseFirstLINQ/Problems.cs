@@ -25,7 +25,7 @@ namespace DatabaseFirstLINQ
             //ProblemSeven();
             //ProblemEight();
             //ProblemNine();
-            ProblemTen();
+            //ProblemTen();
             //ProblemEleven();
             //ProblemTwelve();
             //ProblemThirteen();
@@ -38,7 +38,7 @@ namespace DatabaseFirstLINQ
             //ProblemTwenty();
             //BonusOne();
            //BonusTwo();
-            //BonusThree();
+            BonusThree();
         }
 
         // <><><><><><><><> R Actions (Read) <><><><><><><><><>
@@ -366,28 +366,55 @@ namespace DatabaseFirstLINQ
             {
                 Console.WriteLine("Signed in");
                 Console.WriteLine("Which page do you want to review. Please select number. 1. product page, 2. shopping cart");
-
-                var userInput = Console.ReadLine();
-                switch (userInput)
+                int i = 0;
+                while (i <3)
                 {
-                    case "1":
-                        Console.WriteLine("");
-                        break;
-                    case "2":
-                        Console.WriteLine("");
-                        break;
-                    default:
-                        Console.WriteLine("");
-                        break;
+                    i++;
+                var userInput = Convert.ToInt32(Console.ReadLine());
+                if (userInput == 1)
+                {
+                    var total = _context.ShoppingCarts
+                        .GroupBy(t => t.UserId).Select(t => new
+                        {
+                            UserId = t.Key,
+                            Quantity = t.Sum(x => x.Quantity),
+
+                        });
+                    foreach (var item in total)
+                    {
+                        Console.WriteLine(item);
+                    }
                 }
+                else if (userInput == 2)
+                {
+                    var total2 = _context.Products
+                        .GroupBy(th => th.Name).Select(th => new
+                        {
+                            Name = th.Key,
+                            Description = th.Key,
+                            Price = th.Sum(x => x.Price),
 
-
+                        });
+                    foreach (var item2 in total2)
+                    {
+                        Console.WriteLine(item2);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Try again");
+                }
+                 
+                }
             }
+        
             else
             {
                 Console.WriteLine("Invalid Email or Password.");
             }
+          
         }
 
     }
 }
+
