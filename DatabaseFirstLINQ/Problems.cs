@@ -25,7 +25,7 @@ namespace DatabaseFirstLINQ
             //ProblemSeven();
             //ProblemEight();
             //ProblemNine();
-            //ProblemTen();
+            ProblemTen();
             //ProblemEleven();
             //ProblemTwelve();
             //ProblemThirteen();
@@ -37,7 +37,7 @@ namespace DatabaseFirstLINQ
             //ProblemNineteen();
             //ProblemTwenty();
             //BonusOne();
-            BonusTwo();
+           //BonusTwo();
             //BonusThree();
         }
 
@@ -156,26 +156,18 @@ namespace DatabaseFirstLINQ
 
         private void ProblemTen()
         {
-            // Write a LINQ query that retreives all of the products in the shopping cart of users who have the role of "Employee".
-            // Then print the user's email as well as the product's name, price, and quantity to the console.
-            
-            
+            var customerUsers = _context.UserRoles.
+                Include(ur => ur.Role).
+                Include(ur => ur.User).
+                Select(ur => ur.Role.Id == 2);
             var customerProducts = _context.ShoppingCarts.
-              Include(cp => cp.Product).Include(cp =>cp.User);
-
+                Include(cp => cp.Product).
+                Include(cp => cp.User).
+                Where(cp => cp.UserId == 3 || cp.UserId == 4);
             foreach (ShoppingCart product in customerProducts)
             {
-                Console.WriteLine($"Product Name: {product.Product.Name}  " +
-                    $"Product Price: {product.Product.Price},  " +
-                    $"Product Quantity: {product.Quantity},  " +
-                    $"Email: {product.User.Email}");
+                Console.WriteLine($"Email: {product.User.Email}, Product name: {product.Product.Name}, Price: {product.Product.Price}, Quantity: {product.Quantity}");
             }
-          
-            //var customerUsers = _context.UserRoles.
-            //    Include(ur => ur.Role).
-            //    Include(ur => ur.User).
-            //    Where(ur => ur.Role.RoleName == "Employee");
-
         }
 
         // <><><><><><><><> CUD (Create, Update, Delete) Actions <><><><><><><><><>
@@ -365,6 +357,36 @@ namespace DatabaseFirstLINQ
             // a. Display "Invalid Email or Password"
             // b. Re-prompt the user for credentials
 
+            Console.Write("Print your email: ");
+            var inputEmail = Console.ReadLine();
+            Console.Write("Print your Password: ");
+            var inputPassword = Console.ReadLine();
+            var result = from r in _context.Users where r.Email == inputEmail && r.Password == inputPassword select r;
+            if (result.Count() > 0)
+            {
+                Console.WriteLine("Signed in");
+                Console.WriteLine("Which page do you want to review. Please select number. 1. product page, 2. shopping cart");
+
+                var userInput = Console.ReadLine();
+                switch (userInput)
+                {
+                    case "1":
+                        Console.WriteLine("");
+                        break;
+                    case "2":
+                        Console.WriteLine("");
+                        break;
+                    default:
+                        Console.WriteLine("");
+                        break;
+                }
+
+
+            }
+            else
+            {
+                Console.WriteLine("Invalid Email or Password.");
+            }
         }
 
     }
